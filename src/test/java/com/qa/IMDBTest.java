@@ -35,6 +35,14 @@ public class IMDBTest {
         // Wait for the page to load
         $("body").shouldBe(visible);
 
+        // Click cookie accept button
+        SelenideElement cookieAcceptButton = $x("//button[contains(text(), 'Accept') or contains(text(), 'I Agree') or contains(text(), 'Accept Cookies')]");
+        if (cookieAcceptButton.exists() && cookieAcceptButton.isDisplayed()) {
+            cookieAcceptButton.click();
+            // Wait for the banner to disappear
+            cookieAcceptButton.shouldNotBe(visible);
+        }
+
         // 5. Verify that page title matches the one saved from the dropdown and print title to the console
         SelenideElement pageTitle = $("h1").shouldBe(visible);
         String actualTitleName = pageTitle.getText();
@@ -55,6 +63,7 @@ public class IMDBTest {
 
         // Assert count is more than 3
         assert count > 3 : "Expected count to be greater than 3, but was " + count;
+        System.out.println("Verified Top cast count is greater than 3");
 
         // 7. Click on the third profile in the "Top Cast" section
         SelenideElement castSection = $("section[data-testid='title-cast']");
@@ -71,14 +80,17 @@ public class IMDBTest {
                 .shouldBe(visible).getText();
         thirdCastItem.scrollIntoView(true);
         thirdCastItem.$("a[data-testid='title-cast-item__actor']").click();
+        System.out.println("Clicked on third Top cast profile");
         String currentUrl = WebDriverRunner.url();
         assert currentUrl.contains("/name/") : "Expected actor profile URL but got: " + currentUrl;
+        System.out.println("Current URL after profile click: " + currentUrl);
 
         // Verify actor name is displayed in the header
         SelenideElement actorNameHeader = $("h1").shouldBe(visible);
         String actualActorName = actorNameHeader.getText();
         assert actualActorName.toLowerCase().contains(expectedActorName.toLowerCase()) :
                 "Expected actor name '" + expectedActorName + "' but found '" + actualActorName + "'";
+        System.out.println("Actor profile header matches the selected cast profile");
     }
 }
 
