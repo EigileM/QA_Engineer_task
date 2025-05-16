@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Selenide for UI automation
+    implementation 'com.codeborne:selenide:7.9.2'
+
+    // TestNG for testing framework
+    testImplementation 'org.testng:testng:7.5'
+
+    // Allure TestNG adapter for reporting
+    testImplementation 'io.qameta.allure:allure-testng:2.22.2'
+}
+
+// Use TestNG for testing
+test {
+    useTestNG()
+    systemProperty 'selenide.browser', 'Chrome'
+}
